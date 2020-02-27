@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Notion Powerup
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0
+// @version      1.3.1
 // @author       You
 // @match        https://www.notion.so/*
 // @grant        none
@@ -176,9 +176,14 @@ function openAsPage(isDark) {
         const newColl = { ...coll }
 
         let headerContainer = jumper(coll.el, [-1, -1, 0, 0]).el
-        newColl.title = jumper(headerContainer, [headerContainer.childElementCount - 1, 0, 0, 0]).el
+        //newColl.title = jumper(headerContainer, [headerContainer.childElementCount - 1, 0, 0, 0, 0]).el
         //if (!newColl.title.nodeValue) console.error(newColl.title)
 
+        newColl.title = headerContainer.querySelector('[placeholder="Untitled"]')
+        if (newColl.title.childNodes.length > 0) newColl.title = newColl.title.childNodes[0]
+        if (newColl.title.childNodes.length > 0) newColl.title = newColl.title.childNodes[0]
+
+        if (!newColl.title.nodeValue) console.log(newColl)
         newColl.openAsNewPage = newColl.title.nodeValue.endsWith(endSymbol)
 
         switch(coll.type) {
